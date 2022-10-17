@@ -1,0 +1,77 @@
+// custom font
+@import (css)
+  url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700;800&display=swap");
+
+// vars
+:root {
+  --primary: #4f515a;
+  --secondary: #ebebeb;
+  --warning: #da0f41;
+}
+
+html,
+body {
+  font-family: "Nunito", sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--primary);
+}
+
+body {
+  background-color: #fafafa;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+.btn {
+  display: inline-block;
+  background-color: var(--secondary);
+  border-radius: 8px;
+  border: 0;
+  padding: 8px 12px;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    color: var(--primary);
+    background-color: var(--secondary);
+    cursor: not-allowed;
+  }
+}
+
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 1px 2px 3px rgba(50, 50, 50, 0.05);
+  border: 1px solid var(--secondary);
+  background-color: white;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 20px auto;
+  border: 0;
+  border-bottom: 1px solid var(--secondary);
+  padding: 10px;
+  outline: none;
+}
+
+.error {
+  color: var(--warning);
+  font-size: 14px;
+  margin: 16px 0;
+}
