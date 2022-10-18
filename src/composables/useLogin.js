@@ -1,7 +1,7 @@
 import { ref } from "vue";
 
 // import auth service
-import { projectAuth } from "@/firebase/firebase.config";
+import { projectAuth } from "@/firebase/config";
 
 const error = ref(null);
 
