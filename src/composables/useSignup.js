@@ -1,7 +1,7 @@
 import { ref } from "vue";
 
 // import auth service
-import { projectAuth } from "@/firebase/firebase.config";
+import { projectAuth } from "@/firebase/config";
 
 const error = ref(null);
 const isPending = ref(false);
@@ -31,7 +31,7 @@ const signup = async (email, password, displayName) => {
 };
 
 const useSignup = () => {
-  return { error, signup };
+  return { error, signup, isPending };
 };
 
 export default useSignup;
