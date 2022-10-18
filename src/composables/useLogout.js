@@ -20,7 +20,7 @@ const logout = async () => {
 };
 
 const useLogout = () => {
-  return { logout, error };
+  return { logout, error, isPending };
 };
 
 export default useLogout;

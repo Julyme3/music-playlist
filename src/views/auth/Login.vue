@@ -9,7 +9,7 @@
       autocomplete
     />
     <span v-if="error" class="error">{{ error }}</span>
-    <button class="btn">Log in</button>
+    <button class="btn" :disabled="isPending">Log in</button>
   </form>
 </template>
 
@@ -19,7 +19,7 @@ import { ref } from "vue";
 
 const email = ref("");
 const password = ref("");
-const { error, login } = useLogin();
+const { error, login, isPending } = useLogin();
 
 const handleSubmit = async () => {
   await login(email.value, password.value);
