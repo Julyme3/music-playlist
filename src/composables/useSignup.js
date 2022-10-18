@@ -1,0 +1,32 @@
+import { ref } from "vue";
+
+// import auth service
+import { projectAuth } from "@/firebase/firebase.config";
+
+const error = ref(null);
+
+const signup = async (email, password, displayName) => {
+  try {
+    error.value = null;
+    const response = await projectAuth.createUserWithEmailAndPassword(
+      email,
+      password
+    );
+
+    if (!response) {
+      throw new Error("Could not complete the signup");
+    }
+
+    await response.user.updateProfile({ displayName });
+
+    return response;
+  } catch (err) {
+    error.value = err.message;
+  }
+};
+
+const useSignup = () => {
+  return { error, signup };
+};
+
+export default useSignup;
