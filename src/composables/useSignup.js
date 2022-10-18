@@ -4,8 +4,11 @@ import { ref } from "vue";
 import { projectAuth } from "@/firebase/firebase.config";
 
 const error = ref(null);
+const isPending = ref(false);
 
 const signup = async (email, password, displayName) => {
+  isPending.value = true;
+
   try {
     error.value = null;
     const response = await projectAuth.createUserWithEmailAndPassword(
@@ -22,6 +25,8 @@ const signup = async (email, password, displayName) => {
     return response;
   } catch (err) {
     error.value = err.message;
+  } finally {
+    isPending.value = false;
   }
 };
 

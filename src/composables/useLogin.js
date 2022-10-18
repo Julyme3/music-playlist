@@ -4,9 +4,11 @@ import { ref } from "vue";
 import { projectAuth } from "@/firebase/config";
 
 const error = ref(null);
+const isPending = ref(false);
 
 const login = async (email, password) => {
   error.value = null;
+  isPending.value = true;
 
   try {
     const response = await projectAuth.signInWithEmailAndPassword(
@@ -21,6 +23,8 @@ const login = async (email, password) => {
     return response;
   } catch (err) {
     error.value = err.message;
+  } finally {
+    isPending.value = false;
   }
 };
 

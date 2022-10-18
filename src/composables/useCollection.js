@@ -3,14 +3,19 @@ import { projectFirestore } from "@/firebase/firebase.config";
 
 const useCollection = (collection) => {
   const error = ref(null);
+  const isPending = ref(false);
 
   const addDoc = async (doc) => {
+    isPending.value = true;
+
     try {
       error.value = null;
       await projectFirestore.collection(collection).add(doc);
     } catch (e) {
       console.log(e.message);
       error.value = "Could not send the message";
+    } finally {
+      isPending.value = false;
     }
   };
 
