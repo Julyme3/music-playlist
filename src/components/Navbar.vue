@@ -7,6 +7,7 @@
       </h1>
       <div class="navbar-links">
         <button
+          v-if="user"
           @click="handleClick"
           class="btn"
           type="button"
@@ -14,8 +15,10 @@
         >
           Logout
         </button>
-        <router-link class="btn" :to="{ name: 'Signup' }">Signup</router-link>
-        <router-link class="btn" :to="{ name: 'Login' }">Log in</router-link>
+        <template v-else>
+          <router-link class="btn" :to="{ name: 'Signup' }">Signup</router-link>
+          <router-link class="btn" :to="{ name: 'Login' }">Log in</router-link>
+        </template>
       </div>
     </nav>
   </div>
@@ -24,8 +27,10 @@
 <script setup>
 import { useRouter } from "vue-router";
 import useLogout from "@/composables/useLogout";
+import getUser from "@/composables/getUser";
 
 const router = useRouter();
+const { user } = getUser();
 
 const { error, logout, isPending } = useLogout();
 const handleClick = async () => {
