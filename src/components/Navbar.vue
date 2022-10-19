@@ -6,7 +6,14 @@
         <router-link :to="{ name: 'Home' }">Music playlist</router-link>
       </h1>
       <div class="navbar-links">
-        <button class="btn" type="button">Logout</button>
+        <button
+          @click="handleClick"
+          class="btn"
+          type="button"
+          :disabled="isPending"
+        >
+          Logout
+        </button>
         <router-link class="btn" :to="{ name: 'Signup' }">Signup</router-link>
         <router-link class="btn" :to="{ name: 'Login' }">Log in</router-link>
       </div>
@@ -14,7 +21,22 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from "vue-router";
+import useLogout from "@/composables/useLogout";
+
+const router = useRouter();
+
+const { error, logout, isPending } = useLogout();
+const handleClick = async () => {
+  await logout();
+
+  if (!error.value) {
+    console.log("logout");
+    router.push({ name: "Login" });
+  }
+};
+</script>
 
 <style scoped lang="less">
 .navbar {
