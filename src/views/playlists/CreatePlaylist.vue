@@ -12,13 +12,18 @@
         type="file"
         accept="image/*"
     /></label>
-    <button class="btn" :disabled="!isValidForm">Create</button>
+    <button class="btn" :disabled="!isValidForm || isPending">
+      {{ textBtn }}
+    </button>
   </form>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
 import useStorage from "@/composables/useStorage";
+import useCollection from "@/composables/useCollection";
+import { timestamp } from "@/firebase/config";
+import getUser from "@/composables/getUser";
 
 const title = ref("");
 const description = ref("");
@@ -29,10 +34,28 @@ const isValidForm = computed(
 );
 
 const { url, filePath, uploadImage } = useStorage();
+const { user } = getUser();
+const { error, addDoc } = useCollection("playlists");
+const isPending = ref(false);
 const handleSubmit = async () => {
   if (file.value) {
+    isPending.value = true;
     await uploadImage(file.value);
-    console.log("Uploaded image, url: ", url.value);
+    await addDoc({
+      title: title.value,
+      description: description.value,
+      userId: user.value.uid,
+      userName: user.value.displayName,
+      coverUrl: url.value,
+      filePath: filePath.value,
+      songs: [],
+      createdAt: timestamp(),
+    });
+    isPending.value = false;
+
+    if (!error.value) {
+      console.log("Uploaded image, url: ", url.value);
+    }
   }
 };
 
@@ -45,6 +68,8 @@ const handleChangeImage = (e) => {
     file.value = null;
   }
 };
+
+const textBtn = computed(() => (isPending.value ? "Saving" : "Create"));
 </script>
 
 <style scoped lang="less">

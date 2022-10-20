@@ -19,7 +19,7 @@ const useStorage = () => {
         throw new Error("Could upload file");
       }
 
-      url.value = res.ref.getDownloadURL();
+      url.value = await res.ref.getDownloadURL();
     } catch (e) {
       error.value = e.message;
       url.value = null;
