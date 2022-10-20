@@ -6,6 +6,9 @@
         <router-link :to="{ name: 'Home' }">Music playlist</router-link>
       </h1>
       <div class="navbar-links">
+        <router-link class="btn" :to="{ name: 'CreatePlaylist' }"
+          >Create Playlist</router-link
+        >
         <button
           v-if="user"
           @click="handleClick"

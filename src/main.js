@@ -4,8 +4,13 @@ import router from "./router";
 
 import "@/assets/main.less";
 
-const app = createApp(App);
+// import auth service
+import { projectAuth } from "@/firebase/config";
 
-app.use(router);
+let app;
 
-app.mount("#app");
+projectAuth.onAuthStateChanged(() => {
+  if (!app) {
+    app = createApp(App).use(router).mount("#app");
+  }
+});
