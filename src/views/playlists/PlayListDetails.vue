@@ -28,13 +28,16 @@
 
 <script setup>
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 import getDocument from "@/composables/getDocument";
 import getUser from "@/composables/getUser";
 import useDocument from "@/composables/useDocument";
+import useStorage from "@/composables/useStorage";
 
 const props = defineProps({
   id: String,
 });
+const router = useRouter();
 
 const { error, document: playlist } = getDocument("playlists", props.id);
 
@@ -44,8 +47,12 @@ const ownershitp = computed(
 );
 
 const { deleteDoc } = useDocument("playlists", props.id);
-const handleDelete = () => {
-  deleteDoc();
+const { deleteImage } = useStorage();
+const handleDelete = async () => {
+  await deleteImage(playlist.value?.filePath);
+  await deleteDoc();
+
+  router.push({ name: "Home" });
 };
 </script>
 
