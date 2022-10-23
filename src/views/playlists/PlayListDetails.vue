@@ -15,6 +15,9 @@
         >Created by {{ playlist.userName }}</span
       >
       <p class="playlist-details-desc">{{ playlist.description }}</p>
+      <button v-if="ownershitp" @click="handleDelete" type="button">
+        Delete Playlist
+      </button>
     </div>
 
     <ul class="playlist-details-songs">
@@ -24,13 +27,26 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import getDocument from "@/composables/getDocument";
+import getUser from "@/composables/getUser";
+import useDocument from "@/composables/useDocument";
 
 const props = defineProps({
   id: String,
 });
 
 const { error, document: playlist } = getDocument("playlists", props.id);
+
+const { user } = getUser();
+const ownershitp = computed(
+  () => playlist.value && user.value?.uid === playlist.value.userId
+);
+
+const { deleteDoc } = useDocument("playlists", props.id);
+const handleDelete = () => {
+  deleteDoc();
+};
 </script>
 
 <style scoped lang="less">
