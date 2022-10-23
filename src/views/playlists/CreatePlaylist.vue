@@ -20,10 +20,13 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 import useStorage from "@/composables/useStorage";
 import useCollection from "@/composables/useCollection";
 import { timestamp } from "@/firebase/config";
 import getUser from "@/composables/getUser";
+
+const router = useRouter();
 
 const title = ref("");
 const description = ref("");
@@ -41,7 +44,7 @@ const handleSubmit = async () => {
   if (file.value) {
     isPending.value = true;
     await uploadImage(file.value);
-    await addDoc({
+    const res = await addDoc({
       title: title.value,
       description: description.value,
       userId: user.value.uid,
@@ -54,7 +57,7 @@ const handleSubmit = async () => {
     isPending.value = false;
 
     if (!error.value) {
-      console.log("Uploaded image, url: ", url.value);
+      router.push({ name: "PlayListDetails", params: { id: res.id } });
     }
   }
 };
