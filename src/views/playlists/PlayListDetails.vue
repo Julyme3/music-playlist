@@ -20,9 +20,9 @@
       </button>
     </div>
 
-    <ul class="playlist-details-songs">
-      Songs
-    </ul>
+    <div class="playlist-details-songs">
+      <AddSong />
+    </div>
   </article>
 </template>
 
@@ -33,6 +33,7 @@ import getDocument from "@/composables/getDocument";
 import getUser from "@/composables/getUser";
 import useDocument from "@/composables/useDocument";
 import useStorage from "@/composables/useStorage";
+import AddSong from "@/components/AddSong.vue";
 
 const props = defineProps({
   id: String,
