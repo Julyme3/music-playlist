@@ -15,7 +15,12 @@
         >Created by {{ playlist.userName }}</span
       >
       <p class="playlist-details-desc">{{ playlist.description }}</p>
-      <button v-if="ownershitp" @click="handleDelete" type="button">
+      <button
+        v-if="ownershitp"
+        @click="handleDelete"
+        type="button"
+        :disabled="isPending"
+      >
         Delete Playlist
       </button>
     </div>
@@ -28,7 +33,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import getDocument from "@/composables/getDocument";
 import getUser from "@/composables/getUser";
@@ -50,10 +55,12 @@ const ownershitp = computed(
 
 const { deleteDoc } = useDocument("playlists", props.id);
 const { deleteImage } = useStorage();
+const isPending = ref(false);
 const handleDelete = async () => {
+  isPending.value = true;
   await deleteImage(playlist.value?.filePath);
   await deleteDoc();
-
+  isPending.value = false;
   router.push({ name: "Home" });
 };
 </script>

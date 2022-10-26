@@ -11,13 +11,7 @@ const useDocument = (collection, id) => {
 
     try {
       isPending.value = true;
-      const res = await documentRef.delete();
-
-      if (!res) {
-        throw new Error("Could not delete playlist");
-      }
-
-      return res;
+      await documentRef.delete();
     } catch (e) {
       console.log(e.message);
       error.value = e.message;
