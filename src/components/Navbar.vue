@@ -13,6 +13,7 @@
           <router-link class="btn" :to="{ name: 'UserPlaylists' }"
             >My Playlists</router-link
           >
+          <span class="navbar-username">Hi there, {{ user.displayName }}</span>
           <button
             @click="handleClick"
             class="btn"
@@ -79,6 +80,12 @@ const handleClick = async () => {
 
   &-img {
     max-height: 60px;
+  }
+
+  &-username {
+    display: inline-block;
+    margin-left: 30px;
+    font-size: 14px;
   }
 }
 </style>
