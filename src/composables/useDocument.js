@@ -4,10 +4,10 @@ import { projectFirestore } from "@/firebase/config";
 const useDocument = (collection, id) => {
   const error = ref(null);
   const isPending = ref(false);
+  const documentRef = projectFirestore.collection(collection).doc(id);
 
   const deleteDoc = async () => {
     error.value = null;
-    const documentRef = projectFirestore.collection(collection).doc(id);
 
     try {
       isPending.value = true;
@@ -25,7 +25,22 @@ const useDocument = (collection, id) => {
       isPending.value = false;
     }
   };
-  return { error, isPending, deleteDoc };
+
+  const updateDoc = async (updates) => {
+    error.value = null;
+
+    try {
+      isPending.value = true;
+      await documentRef.update(updates);
+    } catch (e) {
+      console.log(e.message);
+      error.value = e.message;
+    } finally {
+      isPending.value = false;
+    }
+  };
+
+  return { error, isPending, deleteDoc, updateDoc };
 };
 
 export default useDocument;

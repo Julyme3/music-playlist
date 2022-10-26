@@ -7,26 +7,43 @@
       <h3 class="add-song-title">Add a new Song</h3>
       <input type="text" v-model="title" placeholder="Music title" required />
       <input type="text" v-model="artist" placeholder="Artist" required />
-      <button>Add</button>
+      <button :disabled="isPending">Add</button>
     </form>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import useDocument from "@/composables/useDocument";
 
+const props = defineProps({
+  playlist: Object,
+});
 const showForm = ref(false);
 const title = ref("");
 const artist = ref("");
 
-const handleSubmit = () => {
+const { updateDoc, isPending, error } = useDocument(
+  "playlists",
+  props.playlist.id
+);
+const handleSubmit = async () => {
   const newSong = {
     title: title.value,
     artist: artist.value,
     id: Math.floor(Math.random() * 1000000),
   };
 
-  console.log(newSong);
+  await updateDoc({ songs: [...props.playlist.songs, newSong] });
+
+  if (!error.value) {
+    resetForm();
+  }
+};
+
+const resetForm = () => {
+  title.value = "";
+  artist.value = "";
 };
 </script>
 

@@ -21,7 +21,8 @@
     </div>
 
     <div class="playlist-details-songs">
-      <AddSong />
+      playlist songs
+      <AddSong v-if="ownershitp" :playlist="playlist" />
     </div>
   </article>
 </template>
