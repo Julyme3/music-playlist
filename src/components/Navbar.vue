@@ -6,18 +6,23 @@
         <router-link :to="{ name: 'Home' }">Music playlist</router-link>
       </h1>
       <div class="navbar-links">
-        <router-link class="btn" :to="{ name: 'CreatePlaylist' }"
-          >Create Playlist</router-link
+        <template v-if="user">
+          <router-link class="btn" :to="{ name: 'CreatePlaylist' }"
+            >Create Playlist</router-link
+          >
+          <router-link class="btn" :to="{ name: 'UserPlaylists' }"
+            >My Playlists</router-link
+          >
+          <button
+            @click="handleClick"
+            class="btn"
+            type="button"
+            :disabled="isPending"
+          >
+            Logout
+          </button></template
         >
-        <button
-          v-if="user"
-          @click="handleClick"
-          class="btn"
-          type="button"
-          :disabled="isPending"
-        >
-          Logout
-        </button>
+
         <template v-else>
           <router-link class="btn" :to="{ name: 'Signup' }">Signup</router-link>
           <router-link class="btn" :to="{ name: 'Login' }">Log in</router-link>
