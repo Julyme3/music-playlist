@@ -17,7 +17,7 @@
       <p class="playlist-details-desc">{{ playlist.description }}</p>
       <button
         v-if="ownershitp"
-        @click="handleDelete"
+        @click="handleDeletePlaylist"
         type="button"
         :disabled="isPending"
       >
@@ -26,7 +26,30 @@
     </div>
 
     <div class="playlist-details-songs">
-      playlist songs
+      <div v-if="!playlist.songs.length">
+        No songs have been added to this playlist yet.
+      </div>
+      <ul v-else>
+        <li
+          v-for="song in playlist.songs"
+          :key="song.id"
+          class="playlist-details-song"
+        >
+          <div>
+            <h3 class="playlist-details-song-title">{{ song.title }}</h3>
+            <p class="playlist-details-song-artist">{{ song.artist }}</p>
+          </div>
+          <button
+            v-if="ownershitp"
+            type="button"
+            class="playlist-details-btn"
+            @click="handleDeleteSong(song.id)"
+            :disabled="isPending"
+          >
+            Delete
+          </button>
+        </li>
+      </ul>
       <AddSong v-if="ownershitp" :playlist="playlist" />
     </div>
   </article>
@@ -53,15 +76,22 @@ const ownershitp = computed(
   () => playlist.value && user.value?.uid === playlist.value.userId
 );
 
-const { deleteDoc } = useDocument("playlists", props.id);
+const { deleteDoc, updateDoc } = useDocument("playlists", props.id);
 const { deleteImage } = useStorage();
 const isPending = ref(false);
-const handleDelete = async () => {
+const handleDeletePlaylist = async () => {
   isPending.value = true;
   await deleteImage(playlist.value?.filePath);
   await deleteDoc();
   isPending.value = false;
   router.push({ name: "Home" });
+};
+
+const handleDeleteSong = async (id) => {
+  const filteredSongs = playlist.value.songs.filter((song) => song.id !== id);
+  isPending.value = true;
+  await updateDoc({ songs: filteredSongs });
+  isPending.value = false;
 };
 </script>
 
@@ -98,6 +128,14 @@ const handleDelete = async () => {
 
   &-user {
     color: #999;
+  }
+
+  &-song {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--secondary);
+    margin-bottom: 20px;
   }
 }
 </style>
